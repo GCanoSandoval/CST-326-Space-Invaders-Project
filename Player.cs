@@ -6,8 +6,7 @@ public class Player : MonoBehaviour
 {
     private Transform player;
     public float speed;
-    public float maxBound;
-    public float minBound;
+    public float maxBound, minBound;
 
     public GameObject shot;
     public Transform shotSpawn;

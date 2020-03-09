@@ -1,19 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour
 {
-    public List<Enemy> enemyList;
+    private Transform enemyHolder;
+    public float speed;
 
-    void Update()
+    public GameObject shot;
+    public float fireRate = 0.997f;
+
+    private void Start()
     {
-        if (Input.GetAxis("Horizontal") > 0)
+        InvokeRepeating("MoveEnemy", 0.1f, 0.3f);
+        enemyHolder = GetComponent<Transform>();
+    }
+    void MoveEnemy()
+    {
+        enemyHolder.position += Vector3.right * speed;
+        foreach(Transform enemy in enemyHolder)
         {
-            foreach (var enemy in enemyList)
+            if(enemy.position.x < -10.5 || enemy.position.x > 10.5)
             {
-                enemy.transform.Translate(Vector3.right * 5);
+                speed = -speed;
+                enemyHolder.position += Vector3.down * 0.5f;
+                return;
             }
+
+            if(Random.value > fireRate)
+            {
+                Instantiate(shot, enemy.position, enemy.rotation);
+            }
+
+
+           /* if(enemy.position.y <= -4)
+            {
+
+            }
+            */
         }
+
+        if(enemyHolder.childCount == 1)
+        {
+            CancelInvoke();
+            InvokeRepeating("MoveEnemy", 0.1f, 0.25f);
+        }
+
+        /*
+         if(enemyHolder.childCount == 0)
+         {
+         
+         }
+         */
+
     }
 }
